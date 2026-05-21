@@ -49,16 +49,14 @@ No build step. No npm install. Just open the file.
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/taskmanager.git
+git clone https://github.com/eshmalarshad/TaskManager
 
 # Open in browser
-cd taskmanager
+cd TaskManager
 open index.html
 ```
 
 Or simply drag `index.html` into any browser.
-
-> **VS Code users:** Use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for the best experience.
 
 ---
 
