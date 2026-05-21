@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TaskMaster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="landing">
+  <canvas id="landingCanvas"></canvas>
+  <div class="landing-lines"></div>
+  <div class="l-cloud l-cloud-1"></div>
+  <div class="l-cloud l-cloud-2"></div>
+  <div class="l-cloud l-cloud-3"></div>
+  <div class="l-cloud l-cloud-4"></div>
+  <!-- <span class="doodle-scatter">✏️</span>
+  <span class="doodle-scatter">🌟</span>
+  <span class="doodle-scatter">🎨</span>
+  <span class="doodle-scatter">🚀</span>
+  <span class="doodle-scatter">💡</span>
+  <span class="doodle-scatter">🎯</span> -->
+
+  <div class="l-floatcard l-floatcard-1">
+    <div class="l-fc-row"><div class="l-fc-check done"></div><span class="l-fc-text done">Morning run</span></div>
+    <div class="l-fc-row"><div class="l-fc-check done"></div><span class="l-fc-text done">Read 20 pages</span></div>
+    <div class="l-fc-row"><div class="l-fc-check"></div><span class="l-fc-text">Team standup</span></div>
+  </div>
+  <div class="l-floatcard l-floatcard-2">
+    <div class="l-fc-row"><div class="l-fc-dot" style="background:#f59e0b"></div><span class="l-fc-text">Q3 Proposal</span></div>
+    <div class="l-fc-row"><div class="l-fc-dot" style="background:#10b981"></div><span class="l-fc-text">Design review</span></div>
+    <div class="l-fc-row"><div class="l-fc-dot" style="background:#f87171"></div><span class="l-fc-text">Budget report</span></div>
+  </div>
+
+  <div class="landing-inner">
+    <div class="landing-illustration">
+      <div class="nb-spine"></div>
+      <div class="nb-body"></div>
+      <div class="nb-ring"></div>
+      <div class="nb-ring"></div>
+      <div class="nb-ring"></div>
+      <div class="nb-ring"></div>
+      <div class="nb-ring"></div>
+      <div class="nb-lines">
+        <div class="nb-line"></div><div class="nb-line"></div>
+        <div class="nb-line"></div><div class="nb-line"></div><div class="nb-line"></div>
+      </div>
+      <div class="pencil">
+        <div class="pencil-eraser"></div><div class="pencil-band"></div>
+        <div class="pencil-body"></div><div class="pencil-tip"></div>
+      </div>
+      <div class="check-badge">
+        <svg fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <div class="star-badge">⭐</div>
+    </div>
+
+    <div class="landing-eyebrow">✦ Productivity Reimagined</div>
+    <h1 class="landing-title">Task<span class="accent-word">Manager</span></h1>
+    <p class="landing-tagline">Capture ideas, crush goals, track every day — beautifully.</p>
+    <div class="landing-pills">
+      <div class="l-pill l-pill-amber"><span class="l-pill-dot"></span>Daily sessions</div>
+      <div class="l-pill l-pill-green"><span class="l-pill-dot"></span>Smart tracking</div>
+      <div class="l-pill l-pill-purple"><span class="l-pill-dot"></span>Priority tags</div>
+    </div>
+    <div class="landing-loader">
+      <div class="landing-loader-track"><div class="landing-loader-fill" id="landingProgress"></div></div>
+      <div class="landing-loader-label">Loading your workspace</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== AMBIENT BG ===== -->
+<div class="bg-ambient"><canvas id="bgCanvas"></canvas></div>
+
+<!-- ===== MAIN APP ===== -->
+<div class="app-wrapper" id="appWrapper">
+
+  <header class="header">
+    <div class="header-brand">
+      <h1>Task<span>Manager</span></h1>
+      <div class="header-date" id="headerDate"></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="stats-strip">
+    <div class="stat-card"><div class="stat-val all" id="statTotal">0</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-val active" id="statActive">0</div><div class="stat-label">Active</div></div>
+    <div class="stat-card"><div class="stat-val done" id="statDone">0</div><div class="stat-label">Done</div></div>
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-card">
+      <div class="progress-header">
+        <span class="progress-label">Today's Progress</span>
+        <span class="progress-pct" id="progressPct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All</button>
+      <button class="filter-tab" data-filter="active">Active</button>
+      <button class="filter-tab" data-filter="completed">Done</button>
+      <button class="filter-tab" data-filter="overdue">Overdue</button>
+    </div>
+  </div>
+
+  <div class="controls-row">
+    <div class="search-wrap">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search tasks…">
+    </div>
+    <select class="sort-select" id="sortSelect">
+      <option value="created">Latest</option>
+      <option value="priority">Priority</option>
+      <option value="deadline">Deadline</option>
+      <option value="alpha">A → Z</option>
+    </select>
+  </div>
+
+  <!-- Sessions Panel — only shown for returning users with multiple sessions -->
+  <div id="sessionsPanel" style="display:none">
+    <div class="sessions-heading">Your Sessions</div>
+    <div class="sessions-list" id="sessionsList"></div>
+    <button class="btn-new-session" id="btnNewSession" style="display:none">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+      Start new day
+    </button>
+  </div>
+
+  <div class="tasks-section">
+    <div class="tasks-heading">
+      Tasks — <span class="tasks-heading-date" id="tasksHeadingDate"></span>
+    </div>
+    <div class="task-list" id="taskList" role="list"></div>
+  </div>
+
+  <button class="clear-btn" id="clearCompleted" style="display:none">✕ Clear all completed tasks</button>
+
+</div>
+
+<!-- FAB — hidden when viewing a past session -->
+<button class="fab" id="fabBtn" aria-label="Add task" title="Add new task">+</button>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Task form">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">New Task</div>
+    <form id="taskForm" onsubmit="return false;">
+      <div class="form-group">
+        <label class="form-label" for="inputTitle">Task Title *</label>
+        <input type="text" class="form-input" id="inputTitle" placeholder="What needs to be done?" maxlength="120" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="inputNotes">Notes</label>
+        <textarea class="form-textarea" id="inputNotes" placeholder="Add details, context, or links…"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="inputDeadline">Deadline</label>
+          <input type="date" class="form-input" id="inputDeadline">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inputCategory">Category</label>
+          <select class="form-select" id="inputCategory">
+            <option value="">None</option>
+            <option value="Work">Work</option>
+            <option value="Personal">Personal</option>
+            <option value="Health">Health</option>
+            <option value="Finance">Finance</option>
+            <option value="Learning">Learning</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <div class="priority-grid">
+          <div><input type="radio" name="priority" id="p-high" class="priority-option" value="high"><label class="priority-label" for="p-high">🔴 High</label></div>
+          <div><input type="radio" name="priority" id="p-medium" class="priority-option" value="medium" checked><label class="priority-label" for="p-medium">🟡 Med</label></div>
+          <div><input type="radio" name="priority" id="p-low" class="priority-option" value="low"><label class="priority-label" for="p-low">🟢 Low</label></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="submitBtn">Add Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
