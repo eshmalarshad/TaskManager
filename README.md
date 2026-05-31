@@ -32,6 +32,13 @@ A beautifully designed, zero-dependency task manager built with pure HTML, CSS, 
 
 ---
 
+##  Live Demo
+<a href="https://taskmanager-olive-alpha.vercel.app/" target="_blank">
+  Visit Task Manager
+</a>
+
+
+
 ##  Project Structure
 
 ```
